@@ -72,6 +72,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationListener locationListener;
 
     ArrayList<String> addressArr = new ArrayList<>();
+    ArrayList<String> snippetArr = new ArrayList<>();
 
 
     Polygon polygon = null;
@@ -162,9 +163,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             e.printStackTrace();
         }
 
+
+        if(address != null){
+            if(address.getSubThoroughfare() != null)
+            {
+                addressArr.add(address.getSubThoroughfare());
+
+            }
+            if(address.getThoroughfare() != null)
+            {
+
+                addressArr.add(address.getThoroughfare());
+
+            }
+            if(address.getPostalCode() != null)
+            {
+
+                addressArr.add(address.getPostalCode());
+
+            }
+            if(addressArr.isEmpty())
+            {
+                addressArr.add("New City");
+            }
+            if(address.getLocality() != null)
+            {
+                snippetArr.add(address.getLocality());
+            }
+            if(address.getAdminArea() != null)
+            {
+                snippetArr.add(address.getAdminArea());
+            }
+        }
+
         titleStr = TextUtils.join(", ",addressArr);
         titleStr = (titleStr.equals("") ? "  " : titleStr);
 
+        snippetStr = TextUtils.join(", ",snippetArr);
 
         MarkerOptions options = new MarkerOptions().position(latLng)
                 .draggable(true)
@@ -180,6 +215,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Marker mrk = mMap.addMarker(options);
         markersList.add(mrk);
+
+        if (markersList.size() == POLYGON_SIDES) {
+            drawShape();
+        }
+
+        for(Character letter: citiesArr){
+            if(letterList.contains(letter)){
+                continue;
+            }
+            firstCity = letter;
+            break;
+        }
 
         LatLng mLatLng = new LatLng(latLng.latitude - 0.50,latLng.longitude);
         MarkerOptions optionsCityLabel = new MarkerOptions().position(mLatLng)
