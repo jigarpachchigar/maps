@@ -181,6 +181,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Marker mrk = mMap.addMarker(options);
         markersList.add(mrk);
 
+        LatLng mLatLng = new LatLng(latLng.latitude - 0.50,latLng.longitude);
+        MarkerOptions optionsCityLabel = new MarkerOptions().position(mLatLng)
+                .draggable(true)
+                .icon(setText(firstCity.toString()))
+                .snippet(snippetStr);
+        Marker letterMarker = mMap.addMarker(optionsCityLabel);
 
     }
 
